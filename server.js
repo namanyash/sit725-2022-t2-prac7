@@ -52,8 +52,8 @@ const cardList = [
 ]
 
 app.get('/addNumber/:n1/:n2', (req, res)=>{
-    console.log(res);
-    res.sendStatus(200);
+    result = parseInt(req.params.n1) + parseInt(req.params.n2)
+    res.json({statusCode: 200, data: result})
 })
 
 app.post('/api/projects',(req,res) => {

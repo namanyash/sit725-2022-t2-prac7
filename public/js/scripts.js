@@ -9,6 +9,13 @@ const submitForm = () => {
     addProjectToApp(formData);
 }
 
+//Socket connection ...
+let socket = io();
+
+socket.on('number', (msg) => {
+  $('#heading').html(`Message from sockets: ${msg}`);
+});
+
 const cardList = [
     {
         title: "Kitten 2",

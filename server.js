@@ -1,7 +1,10 @@
 var express = require("express")
 
 var app = express()
-var cors = require('cors')
+var cors = require('cors');
+const { Socket } = require("socket.io");
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
 
 let projectsCollection; 
 
@@ -81,9 +84,22 @@ app.get('/api/projects',(req,res) => {
 })
 
 
-var port = process.env.port || 3001;
+io.on('connection', (socket) => {
+    console.log('a user connected', socket.id);
+    socket.on('disconnect', () => {
+      console.log('user disconnected');
+    });
+    setInterval(() => {
+      socket.emit('number', new Date().toISOString());
+    }, 1000);
+    setInterval(() => {
+      socket.emit('random_number', parseInt(Math.random() * 10));
+    });
+  });
 
-app.listen(port,()=>{
+var port = process.env.port || 3010;
+
+http.listen(port,()=>{
     console.log("App listening to: "+port)
     createColllection('Pets')
 })
